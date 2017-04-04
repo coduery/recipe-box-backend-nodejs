@@ -5,6 +5,18 @@ var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
 
+// Capture original request and response
+app.use('/', (req, res, next) => {
+  let originalResponse = res.json.bind(res);
+  res.json = (body) => {
+    console.log(req.method.toUpperCase() + " " + req.originalUrl + ", Status: " + res.statusCode);
+    // console.log('Request Headers: ' + JSON.stringify(req.headers, null, 2));
+    // console.log(body);
+    originalResponse(body);
+  }
+  next();
+})
+
 app.start = function() {
   // start the web server
   return app.listen(function() {
@@ -27,3 +39,4 @@ boot(app, __dirname, function(err) {
   if (require.main === module)
     app.start();
 });
+

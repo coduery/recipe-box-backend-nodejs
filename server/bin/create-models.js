@@ -30,17 +30,32 @@ function createModels(modelPath, callback) {
       console.error(err);
     }
 
+    let modelRelations = {
+      "category": {
+        "recipes": {
+          "type": "hasMany",
+          "model": "Recipe",
+          "foreignKey": "categoryId"
+        }
+      }
+    };
+
     let count = models.length;
     for (let i = 0; i < models.length; i++) {
       let tableName = models[i].name;
 
-      ds.discoverSchema(tableName, { associations: true }, function(err, schema) {
+      ds.discoverSchema(tableName, function(err, schema) {
         if (err) {
           console.error(err);
         }
 
         let schemaName = schema.name.toLowerCase();
         let jsonFilename = schemaName + '.json';
+
+        if (modelRelations[schemaName]) {
+          schema["relations"] = modelRelations[schemaName];
+        }
+
         fs.writeFile(modelPath + jsonFilename, JSON.stringify(schema, null, 2), function(err) {
           if (err) {
             console.error(err);
@@ -98,7 +113,7 @@ function configModels(models, callback) {
         if (err) {
           console.error(err);
         } else {
-          console.log("Models configured to model-config.json");
+          console.log("Models configured in model-config.json");
         }
       });
       callback();

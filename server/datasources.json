@@ -9,7 +9,7 @@
     "url": "mysql://root:heu7_Wyhb6xC@127.0.0.1:3306/recipe_box",
     "database": "recipe_box",
     "password": "heu7_Wyhb6xC",
-    "name": "recipe_box",
+    "name": "recipe-box",
     "user": "root",
     "connector": "mysql"
   }

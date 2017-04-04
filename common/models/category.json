@@ -5,8 +5,7 @@
     "mysql": {
       "schema": "recipe_box",
       "table": "category"
-    },
-    "relations": {}
+    }
   },
   "properties": {
     "id": {
@@ -54,6 +53,13 @@
         "dataScale": 0,
         "nullable": "N"
       }
+    }
+  },
+  "relations": {
+    "recipes": {
+      "type": "hasMany",
+      "model": "Recipe",
+      "foreignKey": "categoryId"
     }
   }
 }
